@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BezKartice.rs | PUBG Mobile UC Dopuna</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #0b0d17;
+            --bg-card: #131622;
+            --primary: #00ffa3;
+            --accent: #38b6ff;
+            --text-main: #ffffff;
+            --text-muted: #8e94a6;
+            --border-color: #1e2235;
+            --danger: #ff4d4d;
+            --warning: #f39c12;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Pravno obaveštenje na samom vrhu */
+        .top-legal-bar {
+            background-color: rgba(255, 255, 255, 0.02);
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            text-align: center;
+            padding: 8px 20px;
+        }
+
+        /* Header sekcija */
+        header {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 60px 20px 40px 20px;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 6px;
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        .tagline {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .geo-badge {
+            color: var(--accent);
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 10px;
+            display: block;
+        }
+
+        /* Glavni kontejner */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px 100px 20px;
+        }
+
+        /* Reorganizovana Info Sekcija (Maksimalno Clean) */
+        .main-notice-box {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 50px;
+        }
+
+        .fee-highlight {
+            color: var(--warning);
+            font-weight: 600;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.95rem;
+        }
+
+        .info-list {
+            list-style: none;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .info-list strong {
+            color: var(--text-main);
+        }
+
+        /* Mreža paketa */
+        .grid-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .uc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 60px;
+        }
+
+        .uc-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 25px 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: border-color 0.2s ease, transform 0.2s ease;
+            cursor: pointer;
+        }
+
+        .uc-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .uc-amount {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .uc-amount span {
+            font-size: 0.8rem;
+            color: var(--primary);
+            margin-left: 4px;
+            font-weight: 500;
+        }
+
+        .uc-price {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-bottom: 20px;
+        }
+
+        .action-btn {
+            background-color: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-weight: 500;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+            width: 100%;
+        }
+
+        .uc-card:hover .action-btn {
+            background-color: var(--primary);
+            color: #000000;
+            border-color: var(--primary);
+        }
+
+        /* Korisnička podrška */
+        .support-box {
+            border-top: 1px solid var(--border-color);
+            padding-top: 50px;
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .support-box h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .email-link {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--accent);
+            margin: 10px 0;
+            display: inline-block;
+        }
+
+        .support-text {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .support-text strong {
+            color: var(--text-main);
+        }
+
+        /* Modal (Uputstvo) */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(5, 6, 10, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-container {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            max-width: 500px;
+            width: 100%;
+            padding: 30px;
+            position: relative;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.4rem;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+
+        .modal-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .step {
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+
+        .step-title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 4px;
+        }
+
+        .step-desc {
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .slip-data {
+            background: rgba(0,0,0,0.2);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 12px;
+        }
+
+        .slip-line {
+            font-size: 0.85rem;
+            margin-bottom: 6px;
+        }
+
+        .slip-line:last-child { margin-bottom: 0; }
+        
+        .slip-line span {
+            color: var(--text-muted);
+            display: inline-block;
+            width: 110px;
+        }
+
+        .slip-line strong {
+            font-family: monospace;
+            color: var(--text-main);
+        }
+
+        .danger-box {
+            background: rgba(255, 77, 77, 0.05);
+            border: 1px solid rgba(255, 77, 77, 0.1);
+            color: var(--danger);
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #07080f;
+            border-top: 1px solid var(--border-color);
+            padding: 40px 20px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-align: center;
+            line-height: 1.7;
+        }
+
+        .footer-wrap {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Responsive podešavanja */
+        @media (min-width: 768px) {
+            .info-list { grid-template-columns: repeat(3, 1fr); gap: 20px; }
+            header { padding: 80px 20px 50px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-legal-bar">
+        BezKartice.rs je nezavisan posrednik i nema zvaničnu poveznicu sa Tencent ili Level Infinite.
+    </div>
+
+    <header>
+        <div class="logo">Bez<span>Kartice</span>.rs</div>
+        <p class="tagline">Posredovanje pri dopuni PUBG Mobile UC valute u Republici Srbiji.</p>
+        <span class="geo-badge">Samo za Srbiju</span>
+    </header>
+
+    <div class="container">
+
+        <div class="main-notice-box">
+            <div class="fee-highlight">
+                ⚠️ VAŽNO: Molimo ponesite dodatnih 60 DINARA za poštu na ime provizije za uslugu prenosa (uplata na račun).
+            </div>
+            <ul class="info-list">
+                <li><strong>Isporuka isti dan:</strong> Za sve uplate izvršene pre 11:00h.</li>
+                <li><strong>Vikend uplate:</strong> Uplate subotom se procesiraju u ponedeljak.</li>
+                <li><strong>Sigurnost:</strong> 100% garantovana bezbednost vaše transakcije.</li>
+            </ul>
+        </div>
+
+        <h2 class="grid-title">Izaberite UC Paket</h2>
+        
+        <div class="uc-grid">
+            <div class="uc-card" onclick="openModal('30 UC')">
+                <div>
+                    <div class="uc-amount">30<span>UC</span></div>
+                    <div class="uc-price">120 DIN</div>
+                </div>
+                <button class="action-btn">Naruči</button>
+            </div>
+
+            <div class="uc-card" onclick="openModal('60 UC')">
+                <div>
+                    <div class="uc-amount">60<span>UC</span></div>
+                    <div class="uc-price">220 DIN</div>
+                </div>
+                <button class="action-btn">Naruči</button>
+            </div>
+
+            <div class="uc-card" onclick="openModal('120 UC')">
+                <div>
+                    <div class="uc-amount">120<span>UC</span></div>
+                    <div class="uc-price">350 DIN</div>
+                </div>
+                <button class="action-btn">Naruči</button>
+            </div>
+
+            <div class="uc-card" onclick="openModal('180 UC')">
+                <div>
+                    <div class="uc-amount">180<span>UC</span></div>
+                    <div class="uc-price">440 DIN</div>
+                </div>
+                <button class="action-btn">Naruči</button>
+            </div>
+
+            <div class="uc-card" onclick="openModal('325 UC')">
+                <div>
+                    <div class="uc-amount">325<span>UC</span></div>
+                    <div class="uc-price">799 DIN</div>
+                </div>
+                <button class="action-btn">Naruči</button>
+            </div>
+
+            <div class="uc-card" onclick="openModal('660 UC')">
+                <div>
+                    <div class="uc-amount">660<span>UC</span></div>
+                    <div class="uc-price">1.400 DIN</div>
+                </div>
+                <button class="action-btn">Naruči</button>
+            </div>
+
+            <div class="uc-card" onclick="openModal('1320 UC')">
+                <div>
+                    <div class="uc-amount">1320<span>UC</span></div>
+                    <div class="uc-price">2.600 DIN</div>
+                </div>
+                <button class="action-btn">Naruči</button>
+            </div>
+
+            <div class="uc-card" onclick="openModal('1800 UC')">
+                <div>
+                    <div class="uc-amount">1800<span>UC</span></div>
+                    <div class="uc-price">3.250 DIN</div>
+                </div>
+                <button class="action-btn">Naruči</button>
+            </div>
+
+            <div class="uc-card" onclick="openModal('2010 UC')">
+                <div>
+                    <div class="uc-amount">2010<span>UC</span></div>
+                    <div class="uc-price">3.959 DIN</div>
+                </div>
+                <button class="action-btn">Naruči</button>
+            </div>
+
+            <div class="uc-card" onclick="openModal('3850 UC')">
+                <div>
+                    <div class="uc-amount">3850<span>UC</span></div>
+                    <div class="uc-price">6.149 DIN</div>
+                </div>
+                <button class="action-btn">Naruči</button>
+            </div>
+
+            <div class="uc-card" onclick="openModal('8100 UC')">
+                <div>
+                    <div class="uc-amount">8100<span>UC</span></div>
+                    <div class="uc-price">12.200 DIN</div>
+                </div>
+                <button class="action-btn">Naruči</button>
+            </div>
+        </div>
+
+        <div class="support-box">
+            <h3>Korisnička Podrška</h3>
+            <div class="email-link">bezkartice.rs@gmail.com</div>
+            <p class="support-text">
+                Ukoliko vam je potrebna **pomoć**, pošaljite email. Obavezno navedite reč <strong>"pomoc"</strong> u naslovu (Subject) poruke.
+            </p>
+        </div>
+
+    </div>
+
+    <div class="modal" id="orderModal">
+        <div class="modal-container">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <div class="modal-title" id="modalTargetTitle">Uputstvo za uplatu</div>
+            
+            <div class="step">
+                <div class="step-title">1. Podaci za uplatnicu</div>
+                <div class="step-desc">Popunite uplatnicu na šalteru pošte ili banke (+60 din provizija pošte):</div>
+                <div class="slip-data">
+                    <div class="slip-line"><span>Broj računa:</span> <strong>170001088193000006</strong></div>
+                    <div class="slip-line"><span>Primalac:</span> <strong>Srecko Prodanovic</strong></div>
+                    <div class="slip-line"><span>Svrha uplate:</span> <strong>Uplata na racun</strong></div>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-title">2. Dokaz o uplati</div>
+                <div class="danger-box">
+                    <strong>Obavezno:</strong> Uslikajte uplatnicu (priznanicu) nakon izvršene uplate kao dokaz.
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-title">3. Slanje podataka</div>
+                <div class="step-desc">Pošaljite sliku uplatnice i vaš **PUBG Mobile ID** na naš email:</div>
+                <div style="font-weight: 600; color: var(--primary); font-size: 1rem; margin-bottom: 5px;">bezkartice.rs@gmail.com</div>
+                <div style="font-size: 0.8rem; color: var(--text-muted);">Naslov poruke: <em>Uplata za [Naziv paketa]</em></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-wrap">
+            <strong>PRAVNO ODRICANJE (DISCLAIMER):</strong> BezKartice.rs je samostalan posrednički veb-sajt koji pruža usluge posredovanja pri nabavci virtualne valute (UC) za igru PUBG Mobile na teritoriji Republike Srbije. Sajt **NIJE** ovlašćen od strane kompanija Tencent Games i Level Infinite, niti je zvanični partner pomenutih entiteta. Sajt radi isključivo kao neoficijalni posrednik radi lakše uplate i garantuje sigurnost prenosa sredstava unutar opisanih pravila.
+            <br><br>
+            &copy; 2026 BezKartice.rs. Sva prava zadržana. Samo za Srbiju.
+        </div>
+    </footer>
+
+    <script>
+        function openModal(packageName) {
+            document.getElementById('modalTargetTitle').innerText = 'Instrukcije za: ' + packageName;
+            document.getElementById('orderModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('orderModal').style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            var modal = document.getElementById('orderModal');
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
