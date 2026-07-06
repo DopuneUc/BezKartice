@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BezKartice.rs | PUBG Mobile UC & Temu Posredovanje</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #060813;
+            --bg-surface: #0d1127;
+            --bg-surface-hover: #141a3a;
+            --primary: #00ffaa;
+            --primary-glow: rgba(0, 255, 170, 0.15);
+            --accent: #38b6ff;
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+            --border-color: rgba(255, 255, 255, 0.06);
+            --border-hover: rgba(0, 255, 170, 0.3);
+            --danger: #ff4d6d;
+            --warning: #ffb703;
+            --temu-orange: #ff5500;
+            --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        .top-legal-bar {
+            background: linear-gradient(90deg, rgba(13,17,39,1) 0%, rgba(6,8,19,1) 50%, rgba(13,17,39,1) 100%);
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            text-align: center;
+            padding: 10px 20px;
+            font-weight: 500;
+        }
+
+        header {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 60px 20px 30px 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .logo {
+            font-size: 2.8rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #ffffff 40%, #a5b4fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo span {
+            background: linear-gradient(135deg, var(--primary) 0%, #00bcff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .tagline {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto 20px auto;
+        }
+
+        /* Novi Navigacioni Tabovi umesto skrivenog dugmeta */
+        .service-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 40px;
+            padding: 0 20px;
+        }
+
+        .tab-btn {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tab-btn:hover {
+            border-color: rgba(255,255,255,0.2);
+            color: #fff;
+        }
+
+        .tab-btn.active[data-target="pubg"] {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: rgba(0, 255, 170, 0.05);
+            box-shadow: 0 4px 20px rgba(0, 255, 170, 0.1);
+        }
+
+        .tab-btn.active[data-target="temu"] {
+            border-color: var(--temu-orange);
+            color: var(--temu-orange);
+            background: rgba(255, 85, 0, 0.05);
+            box-shadow: 0 4px 20px rgba(255, 85, 0, 0.1);
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px 80px 20px;
+        }
+
+        .section-content {
+            display: none;
+        }
+
+        .section-content.active {
+            display: block;
+        }
+
+        /* Glavno obaveštenje */
+        .main-notice-box {
+            background: linear-gradient(135deg, var(--bg-surface) 0%, rgba(13,17,39,0.7) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 40px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .fee-highlight {
+            color: var(--warning);
+            font-weight: 600;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 1rem;
+        }
+
+        .info-list {
+            list-style: none;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .info-list strong {
+            color: var(--text-main);
+        }
+
+        /* Prodavnica Grid */
+        .grid-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .grid-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, var(--border-color) 0%, rgba(0,0,0,0) 100%);
+        }
+
+        .uc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+            gap: 20px;
+            margin-bottom: 60px;
+        }
+
+        .uc-card {
+            background: linear-gradient(135deg, var(--bg-surface) 0%, rgba(20,26,58,0.4) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 25px 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.25s ease;
+            cursor: pointer;
+            box-shadow: var(--card-shadow);
+        }
+
+        .uc-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-4px);
+            background: var(--bg-surface-hover);
+        }
+
+        .uc-amount {
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .uc-amount span {
+            font-size: 0.85rem;
+            color: var(--primary);
+            margin-left: 5px;
+            font-weight: 700;
+        }
+
+        .uc-price {
+            font-size: 1.2rem;
+            color: #fff;
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 6px;
+        }
+
+        .action-btn {
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .uc-card:hover .action-btn {
+            background: linear-gradient(135deg, var(--primary) 0%, #00dd88 100%);
+            color: #030712;
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(0, 255, 170, 0.2);
+        }
+
+        /* NOVI BLOKOVI ZA GRAĐENJE POVERENJA */
+        
+        /* 1. Recenzije / Utisci */
+        .reviews-section {
+            margin: 60px 0;
+        }
+
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .review-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .reviewer-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .review-stars {
+            color: var(--warning);
+            font-size: 0.85rem;
+        }
+
+        .review-text {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-style: italic;
+        }
+
+        .review-verified {
+            color: var(--primary);
+            font-size: 0.75rem;
+            margin-top: 8px;
+            display: block;
+            font-weight: 500;
+        }
+
+        /* 2. FAQ Sekcija */
+        .faq-section {
+            margin: 60px 0;
+        }
+
+        .faq-item {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 18px 20px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        }
+
+        .faq-question::after {
+            content: '+';
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            transition: transform 0.2s;
+        }
+
+        .faq-item.open .faq-question::after {
+            content: '−';
+        }
+
+        .faq-answer {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.25s cubic-bezier(0, 1, 0, 1);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .faq-item.open .faq-answer {
+            padding: 0 20px 20px 20px;
+            max-height: 1000px;
+        }
+
+        /* Korisnička podrška */
+        .support-box {
+            border-top: 1px solid var(--border-color);
+            padding-top: 50px;
+            text-align: center;
+        }
+
+        .support-box h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .contact-methods {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        .contact-btn {
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-decoration: none;
+            color: #fff;
+            transition: transform 0.2s;
+        }
+
+        .contact-btn:hover { transform: translateY(-2px); }
+        .btn-gmail { background-color: #ea4335; }
+        .btn-whatsapp { background-color: #25d366; }
+        .btn-viber { background-color: #7360f2; }
+
+        .support-text {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* Modali */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(3, 5, 12, 0.85);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            backdrop-filter: blur(6px);
+        }
+
+        .modal-container {
+            background: #0d1127;
+            border: 1px solid var(--border-color);
+            border-radius: 18px;
+            max-width: 540px;
+            width: 100%;
+            padding: 30px;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 18px;
+            right: 22px;
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+
+        .modal-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        /* Unos za ID unutar Modala */
+        .id-input-wrapper {
+            margin-bottom: 20px;
+            background: rgba(255,255,255,0.02);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+        }
+
+        .id-input-wrapper label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 6px;
+        }
+
+        .id-input-wrapper input {
+            width: 100%;
+            background: #060813;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 10px;
+            color: #fff;
+            font-family: monospace;
+            font-size: 1rem;
+        }
+
+        .id-input-wrapper input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .step { margin-bottom: 20px; font-size: 0.95rem; }
+        .step-title { font-size: 0.8rem; font-weight: 800; text-transform: uppercase; color: var(--accent); margin-bottom: 4px; }
+        .step-desc { color: var(--text-muted); margin-bottom: 10px; }
+
+        .slip-data { background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.04); border-radius: 10px; padding: 14px; }
+        .slip-line { font-size: 0.9rem; margin-bottom: 6px; display: flex; justify-content: space-between; }
+        .slip-line:last-child { margin-bottom: 0; }
+        .slip-line span { color: var(--text-muted); }
+        .slip-line strong { font-family: monospace; color: var(--text-main); }
+
+        .danger-box { background: rgba(255, 77, 109, 0.06); border: 1px solid rgba(255, 77, 109, 0.15); color: #ff6b84; padding: 12px; border-radius: 8px; font-size: 0.85rem; }
+        .fixed-fee-alert { background: rgba(0, 255, 170, 0.05); border: 1px solid rgba(0, 255, 170, 0.15); color: var(--primary); padding: 14px; border-radius: 10px; font-size: 0.9rem; margin-top: 14px; text-align: center; }
+
+        footer { background-color: #03050a; border-top: 1px solid var(--border-color); padding: 50px 20px; font-size: 0.8rem; color: var(--text-muted); text-align: center; line-height: 1.8; }
+        .footer-brand { font-size: 1.2rem; font-weight: 700; color: #fff; margin-bottom: 12px; }
+        .footer-brand span { color: var(--primary); }
+
+        @media (min-width: 768px) {
+            .info-list { grid-template-columns: repeat(3, 1fr); gap: 20px; }
+            header { padding: 70px 20px 40px 20px; }
+            .logo { font-size: 3.2rem; }
+        }
+
+        @media (max-width: 480px) {
+            .logo { font-size: 2.3rem; }
+            .uc-grid { grid-template-columns: 1fr; }
+            .tab-btn { padding: 12px 16px; font-size: 0.85rem; width: 50%; justify-content: center; }
+            .service-tabs { width: 100%; padding: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-legal-bar">
+        BezKartice.rs je nezavisan posrednik i nema zvaničnu poveznicu sa Tencent, Level Infinite ili Temu.
+    </div>
+
+    <header>
+        <div class="logo">Bez<span>Kartice</span>.rs</div>
+        <p class="tagline">Sigurno posredovanje pri kupovini i dopunama u Republici Srbiji bez korišćenja platnih kartica.</p>
+        <span class="geo-badge">Samo za Srbiju</span>
+    </header>
+
+    <!-- Prebacivanje između usluga na vrhu ekrana -->
+    <div class="service-tabs">
+        <button class="tab-btn active" data-target="pubg" onclick="switchService('pubg')">🎮 PUBG Mobile UC</button>
+        <button class="tab-btn" data-target="temu" onclick="switchService('temu')">🧡 Temu Posredovanje</button>
+    </div>
+
+    <div class="container">
+
+        <!-- SEKCIJA 1: PUBG MOBILE UC -->
+        <div id="pubg-content" class="section-content active">
+            <div class="main-notice-box">
+                <div class="fee-highlight">
+                    ⚠️ VAŽNO: Molimo ponesite dodatnih 60+ DINARA za poštu na ime provizije za uslugu prenosa (uplata na račun).
+                </div>
+                <ul class="info-list">
+                    <li><strong>Isporuka isti dan:</strong><span>Za sve uplate izvršene pre 11:00h.</span></li>
+                    <li><strong>Vikend uplate:</strong><span>Uplate subotom se procesiraju u ponedeljak.</span></li>
+                    <li><strong>Sigurnost:</strong><span>100% garantovana bezbednost vaše transakcije.</span></li>
+                </ul>
+            </div>
+
+            <h2 class="grid-title">Izaberite UC Paket</h2>
+            
+            <div class="uc-grid">
+                <!-- Kartice sa izmenjenim tekstom na dugmetu radi boljeg razumevanja -->
+                <div class="uc-card" onclick="openModal('30 UC', '120')">
+                    <div>
+                        <div class="uc-amount">30<span>UC</span></div>
+                        <div class="uc-price">120 DIN</div>
+                    </div>
+                    <button class="action-btn">Uputstvo za uplatu</button>
+                </div>
+
+                <div class="uc-card" onclick="openModal('60 UC', '220')">
+                    <div>
+                        <div class="uc-amount">60<span>UC</span></div>
+                        <div class="uc-price">220 DIN</div>
+                    </div>
+                    <button class="action-btn">Uputstvo za uplatu</button>
+                </div>
+
+                <div class="uc-card" onclick="openModal('120 UC', '350')">
+                    <div>
+                        <div class="uc-amount">120<span>UC</span></div>
+                        <div class="uc-price">350 DIN</div>
+                    </div>
+                    <button class="action-btn">Uputstvo za uplatu</button>
+                </div>
+
+                <div class="uc-card" onclick="openModal('180 UC', '440')">
+                    <div>
+                        <div class="uc-amount">180<span>UC</span></div>
+                        <div class="uc-price">440 DIN</div>
+                    </div>
+                    <button class="action-btn">Uputstvo za uplatu</button>
+                </div>
+
+                <div class="uc-card" onclick="openModal('325 UC', '799')">
+                    <div>
+                        <div class="uc-amount">325<span>UC</span></div>
+                        <div class="uc-price">799 DIN</div>
+                    </div>
+                    <button class="action-btn">Uputstvo za uplatu</button>
+                </div>
+
+                <div class="uc-card" onclick="openModal('660 UC', '1.400')">
+                    <div>
+                        <div class="uc-amount">660<span>UC</span></div>
+                        <div class="uc-price">1.400 DIN</div>
+                    </div>
+                    <button class="action-btn">Uputstvo za uplatu</button>
+                </div>
+
+                <div class="uc-card" onclick="openModal('1320 UC', '2.600')">
+                    <div>
+                        <div class="uc-amount">1320<span>UC</span></div>
+                        <div class="uc-price">2.600 DIN</div>
+                    </div>
+                    <button class="action-btn">Uputstvo za uplatu</button>
+                </div>
+
+                <div class="uc-card" onclick="openModal('1800 UC', '3.250')">
+                    <div>
+                        <div class="uc-amount">1800<span>UC</span></div>
+                        <div class="uc-price">3.250 DIN</div>
+                    </div>
+                    <button class="action-btn">Uputstvo za uplatu</button>
+                </div>
+
+                <div class="uc-card" onclick="openModal('2010 UC', '3.959')">
+                    <div>
+                        <div class="uc-amount">2010<span>UC</span></div>
+                        <div class="uc-price">3.959 DIN</div>
+                    </div>
+                    <button class="action-btn">Uputstvo za uplatu</button>
+                </div>
+
+                <div class="uc-card" onclick="openModal('3850 UC', '6.149')">
+                    <div>
+                        <div class="uc-amount">3850<span>UC</span></div>
+                        <div class="uc-price">6.149 DIN</div>
+                    </div>
+                    <button class="action-btn">Uputstvo za uplatu</button>
+                </div>
+
+                <div class="uc-card" onclick="openModal('8100 UC', '12.200')">
+                    <div>
+                        <div class="uc-amount">8100<span>UC</span></div>
+                        <div class="uc-price">12.200 DIN</div>
+                    </div>
+                    <button class="action-btn">Uputstvo za uplatu</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEKCIJA 2: TEMU POSREDOVANJE -->
+        <div id="temu-content" class="section-content">
+            <div class="modal-container" style="max-width: 100%; width: 100%; border-color: var(--temu-orange); background: var(--bg-surface); padding: 35px; border-radius: 16px; margin-bottom: 40px;">
+                <div class="modal-title" style="color: #fff; border-bottom: 1px solid var(--border-color); padding-bottom: 14px; display: flex; align-items: center; gap: 8px; margin-bottom: 25px;">
+                   <span style="color: var(--temu-orange);">🧡</span> Kako poručiti preko nas sa Temu-a
+                </div>
+                
+                <div class="step">
+                    <div class="step-title">1. Izbor proizvoda</div>
+                    <div class="step-desc">Izaberite koliko želite stvari sa aplikacije/sajta Temu i pošaljite nam linkove ili specifikacije na jedan od naših izbora kontaktiranja: <strong>Gmail, Viber ili WhatsApp (0612006959)</strong>.</div>
+                </div>
+
+                <div class="step">
+                    <div class="step-title">2. Obračun i Uplata novca</div>
+                    <div class="step-desc">Uplatite novac preko našeg broja računa. Pogledajte primer obračuna uplate ispod:</div>
+                    <div class="slip-data" style="margin-bottom: 14px;">
+                        <div class="slip-line" style="color: var(--warning); font-weight: 600; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 6px;">Primer obračuna (Ako je roba 2000 din):</div>
+                        <div class="slip-line"><span>Vaša porudžbina:</span> <strong>2000 DIN</strong></div>
+                        <div class="slip-line"><span>Naša posrednička naknada:</span> <strong>+500 DIN</strong></div>
+                        <div class="slip-line"><span>Provizija pošte/banke pri uplati:</span> <strong>+60 DIN</strong></div>
+                        <div class="slip-line" style="border-top: 1px solid var(--border-color); padding-top: 8px; margin-top: 8px; border-bottom: none;">
+                            <span>Ukupno poneti i uplatiti:</span> <strong style="color: var(--primary); background: rgba(0,255,170,0.1); padding: 2px 6px; border-radius: 4px;">2560 DIN</strong>
+                        </div>
+                    </div>
+                    
+                    <div class="fixed-fee-alert">
+                        📌 <strong>VAŽNA NAPOMENA:</strong> Nije bitno da li je vaša porudžbina 2000 ili 20000 dinara – naša provizija je uvek ista, fiksno <strong>500 dinara</strong> za celokupnu korpu!
+                    </div>
+                    <br>
+                    <div class="slip-data">
+                        <div class="slip-line"><span>Broj računa:</span> <strong>170001088193000006</strong></div>
+                        <div class="slip-line"><span>Primalac:</span> <strong>Srecko Prodanovic</strong></div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-title">3. Dokaz i Podrška</div>
+                    <div class="step-desc">Odmah nakon izvršene kupovine sa naše strane, na izabrani kontakt dobijate **Screen Shot** (sliku) kao direktan dokaz kupovine. Na raspolaganju vam je naša korisnička podrška **24/7**.</div>
+                </div>
+
+                <div class="step">
+                    <div class="danger-box">
+                        <strong>VAŽNO PRAVILO:</strong> Vraćanje pošiljke i povraćaj novca nakon što se izvrši porudžbina <u>nije moguće</u>.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- NOVO: UTISCI KUPACA (SOCIAL PROOF) -->
+        <div class="reviews-section">
+            <h2 class="grid-title">Utisci naših kupaca (4.9/5 ⭐)</h2>
+            <div class="reviews-grid">
+                <div class="review-card">
+                    <div class="review-header">
+                        <span class="reviewer-name">Nikola M.</span>
+                        <span class="review-stars">⭐⭐⭐⭐⭐</span>
+                    </div>
+                    <p class="review-text">"Uplatio u pošti oko 10h, UC mi je stigao na nalog već u pola 12. Svaka čast na brzini, naručujem opet sigurno!"</p>
+                    <span class="review-verified">✓ Verifikovan kupac (660 UC)</span>
+                </div>
+                <div class="review-card">
+                    <div class="review-header">
+                        <span class="reviewer-name">Sara Pavlović</span>
+                        <span class="review-stars">⭐⭐⭐⭐⭐</span>
+                    </div>
+                    <p class="review-text">"Nemam karticu pa mi je ovo spas za Temu. Poslala linkove, dečko mi izračunao sve u dinar, uplatila i odmah dobila screenshot porudžbine."</p>
+                    <span class="review-verified">✓ Verifikovan kupac (Temu)</span>
+                </div>
+                <div class="review-card">
+                    <div class="review-header">
+                        <span class="reviewer-name">Marko K.</span>
+                        <span class="review-stars">⭐⭐⭐⭐⭐</span>
+                    </div>
+                    <p class="review-text">"U početku sam bio skeptičan jer se uplaćuje na račun, ali sve je prošlo maksimalno pošteno. Preporuka za BezKartice!"</p>
+                    <span class="review-verified">✓ Verifikovan kupac (1800 UC)</span>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- NOVO: ČESTO POSTAVLJANA PITANJA (FAQ) -->
+        <div class="faq-section">
+            <h2 class="grid-title">Često postavljana pitanja</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">Da li je ovaj način kupovine siguran?</div>
+                <div class="faq-answer">Apsolutno. Svaka uplata ide preko zvaničnog bankovnog računa u Republici Srbiji. Vi dobijate papirnu uplatnicu u pošti/banci kao dokaz, a mi vam odmah po obradi šaljemo potvrdu i kupljene artikle ili valutu. Naš račun je transparentan i registrovan.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">Šta ako pogrešim svoj PUBG ID broj?</div>
+                <div class="faq-answer">Pre nego što pošaljete uplatnicu, uvek dobro proverite svoj ID nalog. Ako primetite grešku, odmah nam javite na WhatsApp/Viber pre nego što procesiramo nalog kako bismo uneli ispravan ID. Kada se UC jednom uplati na uneti ID, proces se ne može poništiti.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">Koliko dugo se čeka na isporuku?</div>
+                <div class="faq-answer">Sve uplate koje legnu pre 11:00h radnim danima se rešavaju istog dana (najčešće unutar 1-2 sata od slanja dokaza). Uplate popodne ili vikendom se procesiraju narednog radnog dana (ponedeljak).</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">Da li maloletna lica mogu uplatiti u pošti?</div>
+                <div class="faq-answer">Da, uplatnicu na šalteru pošte ili banke može popuniti i uplatiti bilo ko, bez obzira na godine. Potrebno je samo da ponesete novac i tačno popunite podatke koje generiše naš sajt.</div>
+            </div>
+        </div>
+
+
+        <!-- Korisnička podrška -->
+        <div class="support-box">
+            <h3>Korisnička Podrška & Kontakt</h3>
+            <div class="contact-methods">
+                <a href="mailto:bezkartice.rs@gmail.com" class="contact-btn btn-gmail">Email</a>
+                <a href="https://wa.me/381612006959" target="_blank" class="contact-btn btn-whatsapp">WhatsApp</a>
+                <a href="viber://chat?number=%2B381612006959" class="contact-btn btn-viber">Viber</a>
+            </div>
+            <p class="support-text">
+                Dostupni smo preko bilo kog od navedenih kanala. Ukoliko šaljete email za pomoć, obavezno navedite reč <strong>"pomoc"</strong> u naslovu (Subject) poruke.
+            </p>
+        </div>
+
+    </div>
+
+    <!-- DINAMIČKI MODAL ZA UC UPUTSTVO -->
+    <div class="modal" id="orderModal">
+        <div class="modal-container">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <div class="modal-title" id="modalTargetTitle">Uputstvo za uplatu</div>
+            
+            <!-- Poboljšanje: Polje za ID direktno u modalu radi komfora kupca -->
+            <div class="id-input-wrapper">
+                <label>Opciono: Upiši svoj PUBG ID za uplatnicu</label>
+                <input type="text" id="modalPubgId" placeholder="Npr. 5123456789" oninput="updateSvrhaUplate()">
+            </div>
+
+            <div class="step">
+                <div class="step-title">1. Podaci za uplatnicu</div>
+                <div class="step-desc">Popunite uplatnicu na šalteru pošte ili banke sa ovim tačnim podacima:</div>
+                <div class="slip-data">
+                    <div class="slip-line"><span>Broj računa:</span> <strong>170001088193000006</strong></div>
+                    <div class="slip-line"><span>Primalac:</span> <strong>Srecko Prodanovic</strong></div>
+                    <div class="slip-line"><span>Svrha uplate:</span> <strong id="slipSvrha">Uplata na racun</strong></div>
+                    <div class="slip-line"><span>Iznos na uplatnici:</span> <strong id="slipIznos" style="color: var(--primary); font-size: 1.05rem;">-</strong></div>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-title">2. Dokaz o uplati</div>
+                <div class="danger-box">
+                    <strong>Obavezno:</strong> Uslikajte uplatnicu (priznanicu) nakon što uplatite novac na šalteru.
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-title">3. Slanje podataka</div>
+                <div class="step-desc">Pošaljite sliku uplatnice i vaš **PUBG Mobile ID** na Viber, WhatsApp ili Email:</div>
+                <div style="font-weight: 700; color: var(--primary); font-size: 1rem; margin-bottom: 6px;">0612006959 ili bezkartice.rs@gmail.com</div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-wrap">
+            <div class="footer-brand">Bez<span>Kartice</span>.rs</div>
+            <strong>PRAVNO ODRICANJE (DISCLAIMER):</strong> BezKartice.rs je samostalan posrednički veb-sajt koji pruža usluge posredovanja pri nabavci virtualne valute (UC) za igru PUBG Mobile kao i posredovanje pri kupovini proizvoda na internet platformama na teritoriji Republike Srbije. Sajt **NIJE** ovlašćen od strane kompanija Tencent Games, Level Infinite ili Temu, niti je zvanični partner pomenutih entiteta. Sajt radi isključivo kao neoficijalni posrednik radi lakše uplate i garantuje sigurnost prenosa sredstava unutar opisanih pravila.
+            <br><br>
+            &copy; 2026 BezKartice.rs. Sva prava zadržana. Samo za Srbiju.
+        </div>
+    </footer>
+
+    <script>
+        let trenutniPaket = "";
+
+        // Prebacivanje između PUBG i Temu usluge (Tabovi)
+        function switchService(target) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.section-content').forEach(content => content.classList.remove('active'));
+            
+            document.querySelector(`.tab-btn[data-target="${target}"]`).classList.add('active');
+            document.getElementById(`${target}-content`).classList.add('active');
+        }
+
+        // Otvaranje dinamičkog UC Modala sa računanjem cene
+        function openModal(packageName, price) {
+            trenutniPaket = packageName;
+            document.getElementById('modalTargetTitle').innerText = 'Instrukcije za paket: ' + packageName;
+            document.getElementById('slipIznos').innerText = price + ' DIN';
+            document.getElementById('modalPubgId').value = ""; // reset
+            updateSvrhaUplate();
+            document.getElementById('orderModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('orderModal').style.display = 'none';
+        }
+
+        // Dinamičko ažuriranje svrhe uplate na uplatnici kako kupac kuca svoj ID
+        function updateSvrhaUplate() {
+            let idUnos = document.getElementById('modalPubgId').value.trim();
+            if(idUnos !== "") {
+                document.getElementById('slipSvrha').innerText = 'Kupovina ' + trenutniPaket + ' za ID: ' + idUnos;
+            } else {
+                document.getElementById('slipSvrha').innerText = 'Kupovina ' + trenutniPaket;
+            }
+        }
+
+        // FAQ harmonika efekat
+        function toggleFaq(element) {
+            const item = element.parentElement;
+            item.classList.toggle('open');
+        }
+
+        // Zatvaranje modala klikom van njega
+        window.onclick = function(event) {
+            var ucModal = document.getElementById('orderModal');
+            if (event.target == ucModal) {
+                ucModal.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
