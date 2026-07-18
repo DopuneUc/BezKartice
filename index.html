@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BezKartice.rs | PUBG Mobile UC & Temu Posredovanje</title>
+    <title>BezKartice.rs | PUBG Mobile, Roblox & Temu Usluge</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -20,6 +20,8 @@
             --danger: #ff4d6d;
             --warning: #ffb703;
             --temu-orange: #ff5500;
+            --roblox-red: #ff2a2a;
+            --tiktok-black: #000000;
             --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         }
 
@@ -79,12 +81,23 @@
             margin: 0 auto 20px auto;
         }
 
+        .geo-badge {
+            background: rgba(0, 255, 170, 0.1);
+            color: var(--primary);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border: 1px solid rgba(0, 255, 170, 0.2);
+        }
+
         .service-tabs {
             display: flex;
             justify-content: center;
             gap: 12px;
             margin-bottom: 40px;
             padding: 0 20px;
+            flex-wrap: wrap;
         }
 
         .tab-btn {
@@ -112,6 +125,13 @@
             color: var(--primary);
             background: rgba(0, 255, 170, 0.05);
             box-shadow: 0 4px 20px rgba(0, 255, 170, 0.1);
+        }
+
+        .tab-btn.active[data-target="roblox"] {
+            border-color: var(--roblox-red);
+            color: var(--roblox-red);
+            background: rgba(255, 42, 42, 0.05);
+            box-shadow: 0 4px 20px rgba(255, 42, 42, 0.1);
         }
 
         .tab-btn.active[data-target="temu"] {
@@ -210,6 +230,10 @@
             background: var(--bg-surface-hover);
         }
 
+        .roblox-grid .uc-card:hover {
+            border-color: rgba(255, 42, 42, 0.4);
+        }
+
         .uc-amount {
             font-size: 1.6rem;
             font-weight: 800;
@@ -221,6 +245,10 @@
             color: var(--primary);
             margin-left: 5px;
             font-weight: 700;
+        }
+
+        .roblox-grid .uc-amount span {
+            color: var(--roblox-red);
         }
 
         .uc-price {
@@ -252,6 +280,13 @@
             color: #030712;
             border-color: var(--primary);
             box-shadow: 0 4px 12px rgba(0, 255, 170, 0.2);
+        }
+
+        .roblox-grid .uc-card:hover .action-btn {
+            background: linear-gradient(135deg, var(--roblox-red) 0%, #cc0000 100%);
+            color: #ffffff;
+            border-color: var(--roblox-red);
+            box-shadow: 0 4px 12px rgba(255, 42, 42, 0.2);
         }
 
         .reviews-section {
@@ -384,6 +419,7 @@
         .btn-gmail { background-color: #ea4335; }
         .btn-whatsapp { background-color: #25d366; }
         .btn-viber { background-color: #7360f2; }
+        .btn-tiktok { background-color: var(--tiktok-black); border: 1px solid rgba(255, 255, 255, 0.2); }
 
         .support-text {
             color: var(--text-muted);
@@ -461,15 +497,15 @@
         @media (max-width: 480px) {
             .logo { font-size: 2.3rem; }
             .uc-grid { grid-template-columns: 1fr; }
-            .tab-btn { padding: 12px 16px; font-size: 0.85rem; width: 50%; justify-content: center; }
-            .service-tabs { width: 100%; padding: 0; }
+            .tab-btn { padding: 12px 14px; font-size: 0.85rem; width: 100%; justify-content: center; }
+            .service-tabs { width: 100%; padding: 0; gap: 8px; }
         }
     </style>
 </head>
 <body>
 
     <div class="top-legal-bar">
-        BezKartice.rs je nezavisan posrednik i nema zvaničnu poveznicu sa Tencent, Level Infinite ili Temu.
+        BezKartice.rs je nezavisan posrednik i nema zvaničnu poveznicu sa Tencent, Roblox Corporation ili Temu.
     </div>
 
     <header>
@@ -480,6 +516,7 @@
 
     <div class="service-tabs">
         <button class="tab-btn active" data-target="pubg" onclick="switchService('pubg')">🎮 PUBG Mobile UC</button>
+        <button class="tab-btn" data-target="roblox" onclick="switchService('roblox')">🟥 Roblox Robux</button>
         <button class="tab-btn" data-target="temu" onclick="switchService('temu')">🧡 Temu Posredovanje</button>
     </div>
 
@@ -501,7 +538,7 @@
             <h2 class="grid-title">Izaberite UC Paket</h2>
             
             <div class="uc-grid">
-                <div class="uc-card" onclick="openModal('30 UC', '120')">
+                <div class="uc-card" onclick="openModal('30 UC', '120', 'pubg')">
                     <div>
                         <div class="uc-amount">30<span>UC</span></div>
                         <div class="uc-price">120 DIN</div>
@@ -509,7 +546,7 @@
                     <button class="action-btn">Uputstvo za uplatu</button>
                 </div>
 
-                <div class="uc-card" onclick="openModal('60 UC', '220')">
+                <div class="uc-card" onclick="openModal('60 UC', '220', 'pubg')">
                     <div>
                         <div class="uc-amount">60<span>UC</span></div>
                         <div class="uc-price">220 DIN</div>
@@ -517,7 +554,7 @@
                     <button class="action-btn">Uputstvo za uplatu</button>
                 </div>
 
-                <div class="uc-card" onclick="openModal('120 UC', '350')">
+                <div class="uc-card" onclick="openModal('120 UC', '350', 'pubg')">
                     <div>
                         <div class="uc-amount">120<span>UC</span></div>
                         <div class="uc-price">350 DIN</div>
@@ -525,7 +562,7 @@
                     <button class="action-btn">Uputstvo za uplatu</button>
                 </div>
 
-                <div class="uc-card" onclick="openModal('180 UC', '440')">
+                <div class="uc-card" onclick="openModal('180 UC', '440', 'pubg')">
                     <div>
                         <div class="uc-amount">180<span>UC</span></div>
                         <div class="uc-price">440 DIN</div>
@@ -533,7 +570,7 @@
                     <button class="action-btn">Uputstvo za uplatu</button>
                 </div>
 
-                <div class="uc-card" onclick="openModal('325 UC', '799')">
+                <div class="uc-card" onclick="openModal('325 UC', '799', 'pubg')">
                     <div>
                         <div class="uc-amount">325<span>UC</span></div>
                         <div class="uc-price">799 DIN</div>
@@ -541,7 +578,7 @@
                     <button class="action-btn">Uputstvo za uplatu</button>
                 </div>
 
-                <div class="uc-card" onclick="openModal('660 UC', '1.400')">
+                <div class="uc-card" onclick="openModal('660 UC', '1.400', 'pubg')">
                     <div>
                         <div class="uc-amount">660<span>UC</span></div>
                         <div class="uc-price">1.400 DIN</div>
@@ -549,7 +586,7 @@
                     <button class="action-btn">Uputstvo za uplatu</button>
                 </div>
 
-                <div class="uc-card" onclick="openModal('1320 UC', '2.600')">
+                <div class="uc-card" onclick="openModal('1320 UC', '2.600', 'pubg')">
                     <div>
                         <div class="uc-amount">1320<span>UC</span></div>
                         <div class="uc-price">2.600 DIN</div>
@@ -557,7 +594,7 @@
                     <button class="action-btn">Uputstvo za uplatu</button>
                 </div>
 
-                <div class="uc-card" onclick="openModal('1800 UC', '3.250')">
+                <div class="uc-card" onclick="openModal('1800 UC', '3.250', 'pubg')">
                     <div>
                         <div class="uc-amount">1800<span>UC</span></div>
                         <div class="uc-price">3.250 DIN</div>
@@ -565,7 +602,7 @@
                     <button class="action-btn">Uputstvo za uplatu</button>
                 </div>
 
-                <div class="uc-card" onclick="openModal('2010 UC', '3.959')">
+                <div class="uc-card" onclick="openModal('2010 UC', '3.959', 'pubg')">
                     <div>
                         <div class="uc-amount">2010<span>UC</span></div>
                         <div class="uc-price">3.959 DIN</div>
@@ -573,7 +610,7 @@
                     <button class="action-btn">Uputstvo za uplatu</button>
                 </div>
 
-                <div class="uc-card" onclick="openModal('3850 UC', '6.149')">
+                <div class="uc-card" onclick="openModal('3850 UC', '6.149', 'pubg')">
                     <div>
                         <div class="uc-amount">3850<span>UC</span></div>
                         <div class="uc-price">6.149 DIN</div>
@@ -581,7 +618,7 @@
                     <button class="action-btn">Uputstvo za uplatu</button>
                 </div>
 
-                <div class="uc-card" onclick="openModal('8100 UC', '12.200')">
+                <div class="uc-card" onclick="openModal('8100 UC', '12.200', 'pubg')">
                     <div>
                         <div class="uc-amount">8100<span>UC</span></div>
                         <div class="uc-price">12.200 DIN</div>
@@ -591,7 +628,89 @@
             </div>
         </div>
 
-        <!-- SEKCIJA 2: TEMU POSREDOVANJE -->
+        <!-- SEKCIJA 2: ROBLOX ROBUX -->
+        <div id="roblox-content" class="section-content">
+            <div class="main-notice-box" style="border-color: rgba(255, 42, 42, 0.2);">
+                <div class="fee-highlight" style="color: var(--danger);">
+                    ⚠️ VAŽNO: Molimo ponesite dodatnih 60+ DINARA za poštu na ime provizije za uslugu prenosa (uplata na račun).
+                </div>
+                <ul class="info-list">
+                    <li><strong>Isporuka isti dan:</strong><span>Za sve uplate izvršene pre 11:00h.</span></li>
+                    <li><strong>Brzo slanje:</strong><span>Robux stiže direktno na vaš Roblox profil unutar par sati od obrade.</span></li>
+                    <li><strong>Podaci:</strong><span>Za dopunu nam je potreban samo vaš Roblox Username (BEZ lozinke).</span></li>
+                </ul>
+            </div>
+
+            <h2 class="grid-title">Izaberite Roblox Paket</h2>
+            
+            <div class="uc-grid roblox-grid">
+                <div class="uc-card" onclick="openModal('500 Robuxa', '740', 'roblox')">
+                    <div>
+                        <div class="uc-amount">500<span>Robuxa</span></div>
+                        <div class="uc-price">740 DIN</div>
+                    </div>
+                    <button class="action-btn">Uputstvo za uplatu</button>
+                </div>
+
+                <div class="uc-card" onclick="openModal('1.000 Robuxa', '1.280', 'roblox')">
+                    <div>
+                        <div class="uc-amount">1.000<span>Robuxa</span></div>
+                        <div class="uc-price">1.280 DIN</div>
+                    </div>
+                    <button class="action-btn">Uputstvo za uplatu</button>
+                </div>
+
+                <div class="uc-card" onclick="openModal('1.500 Robuxa', '1.820', 'roblox')">
+                    <div>
+                        <div class="uc-amount">1.500<span>Robuxa</span></div>
+                        <div class="uc-price">1.820 DIN</div>
+                    </div>
+                    <button class="action-btn">Uputstvo za uplatu</button>
+                </div>
+
+                <div class="uc-card" onclick="openModal('2.000 Robuxa', '2.360', 'roblox')">
+                    <div>
+                        <div class="uc-amount">2.000<span>Robuxa</span></div>
+                        <div class="uc-price">2.360 DIN</div>
+                    </div>
+                    <button class="action-btn">Uputstvo za uplatu</button>
+                </div>
+
+                <div class="uc-card" onclick="openModal('3.625 Robuxa', '3.980', 'roblox')">
+                    <div>
+                        <div class="uc-amount">3.625<span>Robuxa</span></div>
+                        <div class="uc-price">3.980 DIN</div>
+                    </div>
+                    <button class="action-btn">Uputstvo za uplatu</button>
+                </div>
+
+                <div class="uc-card" onclick="openModal('5.250 Robuxa', '5.600', 'roblox')">
+                    <div>
+                        <div class="uc-amount">5.250<span>Robuxa</span></div>
+                        <div class="uc-price">5.600 DIN</div>
+                    </div>
+                    <button class="action-btn">Uputstvo za uplatu</button>
+                </div>
+
+                <div class="uc-card" onclick="openModal('11.000 Robuxa', '11.000', 'roblox')">
+                    <div>
+                        <div class="uc-amount">11.000<span>Robuxa</span></div>
+                        <div class="uc-price">11.000 DIN</div>
+                    </div>
+                    <button class="action-btn">Uputstvo za uplatu</button>
+                </div>
+
+                <div class="uc-card" onclick="openModal('24.000 Robuxa', '21.800', 'roblox')">
+                    <div>
+                        <div class="uc-amount">24.000<span>Robuxa</span></div>
+                        <div class="uc-price">21.800 DIN</div>
+                    </div>
+                    <button class="action-btn">Uputstvo za uplatu</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEKCIJA 3: TEMU POSREDOVANJE -->
         <div id="temu-content" class="section-content">
             <div class="modal-container" style="max-width: 100%; width: 100%; border-color: var(--temu-orange); background: var(--bg-surface); padding: 35px; border-radius: 16px; margin-bottom: 40px;">
                 <div class="modal-title" style="color: #fff; border-bottom: 1px solid var(--border-color); padding-bottom: 14px; display: flex; align-items: center; gap: 8px; margin-bottom: 25px;">
@@ -600,7 +719,7 @@
                 
                 <div class="step">
                     <div class="step-title">1. Izbor proizvoda</div>
-                    <div class="step-desc">Izaberite koliko želite stvari sa aplikacije/sajta Temu i pošaljite nam linkove ili specifikacije na jedan od naših izbora kontaktiranja: <strong>Gmail, Viber ili WhatsApp (0612006959)</strong>.</div>
+                    <div class="step-desc">Izaberite koliko želite stvari sa aplikacije/sajta Temu i pošaljite nam linkove ili specifikacije na jedan od naših izbora kontaktiranja: <strong>Gmail, Viber, WhatsApp ili TikTok DM</strong>.</div>
                 </div>
 
                 <div class="step">
@@ -675,22 +794,22 @@
             <h2 class="grid-title">Često postavljana pitanja</h2>
             
             <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">Da li je ovaj način kupovine siguran?</div>
+                <div class="faq-question" onclick="toggleFaq(element = this)">Da li je ovaj način kupovine siguran?</div>
                 <div class="faq-answer">Apsolutno. Svaka uplata ide preko zvaničnog bankovnog računa u Republici Srbiji. Vi dobijate papirnu uplatnicu u pošti/banci kao dokaz, a mi vam odmah po obradi šaljemo potvrdu i kupljene artikle ili valutu. Naš račun je transparentan i registrovan.</div>
             </div>
 
             <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">Kako šaljem svoj PUBG ID broj ako ga nema na uplatnici?</div>
-                <div class="faq-answer">Svoj PUBG ID broj ne upisujete na papirnu uplatnicu u pošti. Nakon što izvršite uplatu na šalteru, jednostavno uslikate uplatnicu telefonom i pošaljete nam sliku zajedno sa vašim PUBG ID brojem direktno na WhatsApp, Viber ili Email. Mi na osnovu uplatnice odmah ručno unosimo vaš ID i vršimo dopunu.</div>
+                <div class="faq-question" onclick="toggleFaq(element = this)">Ako šaljem svoj PUBG ID broj / Roblox Username ako ga nema na uplatnici?</div>
+                <div class="faq-answer">Svoje podatke za igru ne upisujete na papirnu uplatnicu u pošti. Nakon što izvršite uplatu na šalteru, jednostavno uslikate uplatnicu telefonom i pošaljete nam sliku zajedno sa vašim PUBG ID-jem ili Roblox korisničkim imenom direktno na WhatsApp, Viber, Email ili TikTok DM. Mi na osnovu uplatnice ručno vršimo dopunu.</div>
             </div>
 
             <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">Koliko dugo se čeka na isporuku?</div>
+                <div class="faq-question" onclick="toggleFaq(element = this)">Koliko dugo se čeka na isporuku?</div>
                 <div class="faq-answer">Sve uplate koje legnu pre 11:00h radnim danima se rešavaju istog dana (najčešće unutar 1-2 sata od slanja dokaza). Uplate popodne ili vikendom se procesiraju narednog radnog dana (ponedeljak).</div>
             </div>
 
             <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">Da li maloletna lica mogu uplatiti u pošti?</div>
+                <div class="faq-question" onclick="toggleFaq(element = this)">Da li maloletna lica mogu uplatiti u pošti?</div>
                 <div class="faq-answer">Da, uplatnicu na šalteru pošte ili banke može popuniti i uplatiti bilo ko, bez obzira na godine. Potrebno je samo da ponesete novac i tačno prepišete podatke koje generiše naš sajt.</div>
             </div>
         </div>
@@ -699,18 +818,19 @@
         <div class="support-box">
             <h3>Korisnička Podrška & Kontakt</h3>
             <div class="contact-methods">
-                <a href="mailto:bezkartice.rs@gmail.com" class="contact-btn btn-gmail">Email</a>
+                <a href="mailto:bezkartice.rs@gmail.com?subject=pomoc" class="contact-btn btn-gmail">Email</a>
                 <a href="https://wa.me/381612006959" target="_blank" class="contact-btn btn-whatsapp">WhatsApp</a>
                 <a href="viber://chat?number=%2B381612006959" class="contact-btn btn-viber">Viber</a>
+                <a href="https://www.tiktok.com/@bez_kartice.rs" target="_blank" class="contact-btn btn-tiktok">TikTok DM</a>
             </div>
             <p class="support-text">
-                Dostupni smo preko bilo kog od navedenih kanala. Ukoliko šaljete email za pomoć, obavezno navedite reč <strong>"pomoc"</strong> u naslovu (Subject) poruke.
+                Dostupni smo preko bilo kog od navedenih kanala. Klikom na ikonice automatski otvarate ćaskanje sa nama.
             </p>
         </div>
 
     </div>
 
-    <!-- DINAMIČKI MODAL ZA UC UPUTSTVO (BEZ UNOSA ID-JA) -->
+    <!-- DINAMIČKI MODAL ZA UPUTSTVO -->
     <div class="modal" id="orderModal">
         <div class="modal-container">
             <span class="close-btn" onclick="closeModal()">&times;</span>
@@ -718,7 +838,7 @@
 
             <div class="step">
                 <div class="step-title">1. Podaci za uplatnicu</div>
-                <div class="step-desc">Prepisite ove tačne podatke na papirnu uplatnicu u pošti ili banci:</div>
+                <div class="step-desc">Prepišite ove tačne podatke na papirnu uplatnicu u pošti ili banci:</div>
                 <div class="slip-data">
                     <div class="slip-line"><span>Broj računa:</span> <strong>170001088193000006</strong></div>
                     <div class="slip-line"><span>Primalac:</span> <strong>Srecko Prodanovic</strong></div>
@@ -735,10 +855,10 @@
             </div>
 
             <div class="step">
-                <div class="step-title">3. Pošaljite dokaz i svoj PUBG ID</div>
-                <div class="step-desc">Sliku uplatnice i tvoj **PUBG Mobile ID broj** pošalji nam direktno na Viber, WhatsApp ili Email:</div>
-                <div style="font-weight: 700; color: var(--primary); font-size: 1.1rem; margin-top: 5px; text-align: center; background: rgba(0,255,170,0.05); padding: 8px; border-radius: 8px;">
-                    📱 0612006959 <br> ✉️ bezkartice.rs@gmail.com
+                <div class="step-title" id="step3Title">3. Pošaljite dokaz i podatke</div>
+                <div class="step-desc" id="step3Desc">Sliku uplatnice i svoj ID/Username pošaljite nam na Viber, WhatsApp, Email ili TikTok DM:</div>
+                <div style="font-weight: 700; color: var(--primary); font-size: 1.05rem; margin-top: 5px; text-align: center; background: rgba(0,255,170,0.05); padding: 10px; border-radius: 8px; line-height: 1.5;">
+                    📱 0612006959 <br> ✉️ bezkartice.rs@gmail.com <br> 🎵 TikTok DM
                 </div>
             </div>
         </div>
@@ -747,14 +867,13 @@
     <footer>
         <div class="footer-wrap">
             <div class="footer-brand">Bez<span>Kartice</span>.rs</div>
-            <strong>PRAVNO ODRICANJE (DISCLAIMER):</strong> BezKartice.rs je samostalan posrednički veb-sajt koji pruža usluge posredovanja pri nabavci virtualne valute (UC) za igru PUBG Mobile kao i posredovanje pri kupovini proizvoda na internet platformama na teritoriji Republike Srbije. Sajt **NIJE** ovlašćen od strane kompanija Tencent Games, Level Infinite ili Temu, niti je zvanični partner pomenutih entiteta. Sajt radi isključivo kao neoficijalni posrednik radi lakše uplate i garantuje sigurnost prenosa sredstava unutar opisanih pravila.
+            <strong>PRAVNO ODRICANJE (DISCLAIMER):</strong> BezKartice.rs je samostalan posrednički veb-sajt koji pruža usluge posredovanja pri nabavci virtualnih valuta za igre PUBG Mobile i Roblox, kao i posredovanje pri kupovini proizvoda na internet platformama na teritoriji Republike Srbije. Sajt **NIJE** ovlašćen od strane kompanija Tencent Games, Level Infinite, Roblox Corporation ili Temu, niti je zvanični partner pomenutih entiteta. Sajt radi isključivo kao neoficijalni posrednik radi lakše uplate i garantuje sigurnost prenosa sredstava unutar opisanih pravila.
             <br><br>
             &copy; 2026 BezKartice.rs. Sva prava zadržana. Samo za Srbiju.
         </div>
     </footer>
 
     <script>
-        // Prebacivanje između PUBG i Temu usluge (Tabovi)
         function switchService(target) {
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.section-content').forEach(content => content.classList.remove('active'));
@@ -763,11 +882,22 @@
             document.getElementById(`${target}-content`).classList.add('active');
         }
 
-        // Otvaranje dinamičkog UC Modala
-        function openModal(packageName, price) {
+        function openModal(packageName, price, type) {
             document.getElementById('modalTargetTitle').innerText = 'Instrukcije za paket: ' + packageName;
             document.getElementById('slipIznos').innerText = price + ' DIN';
-            document.getElementById('slipSvrha').innerText = 'Uplata na racun ' 
+            document.getElementById('slipSvrha').innerText = 'Uplata na racun';
+            
+            const step3Title = document.getElementById('step3Title');
+            const step3Desc = document.getElementById('step3Desc');
+            
+            if(type === 'roblox') {
+                step3Title.innerText = "3. Pošaljite dokaz i Roblox Username";
+                step3Desc.innerHTML = "Sliku uplatnice i tvoj **Roblox korisnički ime (Username)** pošalji nam direktno na Viber, WhatsApp, Email ili TikTok DM:";
+            } else {
+                step3Title.innerText = "3. Pošaljite dokaz i svoj PUBG ID";
+                step3Desc.innerHTML = "Sliku uplatnice i tvoj **PUBG Mobile ID broj** pošalji nam direktno na Viber, WhatsApp, Email ili TikTok DM:";
+            }
+            
             document.getElementById('orderModal').style.display = 'flex';
         }
 
@@ -775,17 +905,15 @@
             document.getElementById('orderModal').style.display = 'none';
         }
 
-        // FAQ harmonika
         function toggleFaq(element) {
             const item = element.parentElement;
             item.classList.toggle('open');
         }
 
-        // Zatvaranje modala klikom sa strane
         window.onclick = function(event) {
-            var ucModal = document.getElementById('orderModal');
-            if (event.target == ucModal) {
-                ucModal.style.display = "none";
+            var orderModal = document.getElementById('orderModal');
+            if (event.target == orderModal) {
+                orderModal.style.display = "none";
             }
         }
     </script>
